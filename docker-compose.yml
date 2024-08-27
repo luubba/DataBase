@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  db:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 3110
+    ports:
+      - "3306:3306"
+    volumes:
+      - jdbcdata:/var/lib/mysql
+      
+volumes:
+  jdbcdata:
