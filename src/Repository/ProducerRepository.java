@@ -12,7 +12,7 @@ public class ProducerRepository {
 	public static void save(Producer producer) {
 		String sql = null;
 		try {
-			sql = "INSERT INTO `anime_store`.`producer` (`name`) VALUES ('%s');".formatted(Producer.getName());
+			sql = "INSERT INTO `anime_store`.`producer` (`name`) VALUES ('%s');".formatted(producer.getName());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -21,7 +21,28 @@ public class ProducerRepository {
 			Statement stmt = conn.createStatement()){
 			
 			int linhasafetadas = stmt.executeUpdate(sql);
-			System.out.println(linhasafetadas);
+			System.out.println("Linhas afetadas nesta operação = " + linhasafetadas);
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+
+	}
+	
+	public static void delete(int id) {
+		String sql = null;
+		try {
+			sql = "DELETE FROM `anime_store`.`producer` WHERE (`id` = '%d');".formatted(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try(Connection conn = ConnectionFactory.getConnection();
+			Statement stmt = conn.createStatement()){
+			
+			int linhasafetadas = stmt.executeUpdate(sql);
+			System.out.println("Linhas afetadas nesta operação = " + linhasafetadas);
 			
 		} catch (SQLException e) {
 			

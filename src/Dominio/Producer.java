@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Producer {
 	private Integer id;
-	private static String name;
+	private String name;
 	
 	
 	//constructor
@@ -46,7 +46,7 @@ public class Producer {
 		this.id = id;
 	}
 
-	public static String getName() {
+	public String getName() {
 		return name;
 	}
 
