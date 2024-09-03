@@ -18,8 +18,14 @@ public class Main {
 
 		do {
 
-			System.out.println("O que deseja fazer:" + "\n1.Adicionar produtor" + "\n2.Adicionar anime"
-					+ "\n3.Atualizar produtor" + "\n4.Atualizar anime" + "\n5.Remover anime" + "\n6.Remover anime");
+			System.out.println("O que deseja fazer:" + 
+							   "\n1.Adicionar produtor" + 
+							   "\n2.Adicionar anime" + 
+							   "\n3.Atualizar produtor" + 
+							   "\n4.Atualizar anime" + 
+							   "\n5.Remover produtor" + 
+							   "\n6.Remover anime" + 
+							   "\n0. Sair da aplicação");
 
 			option = sc.nextInt();
 			sc.nextLine();
@@ -38,10 +44,7 @@ public class Main {
 			case 2:
 
 				System.out.println("Digite o nome do anime:");
-				String animeName = sc.nextLine();
-
-				Anime anime = new Anime(animeName);
-//					ProducerRepository.save(anime);
+				
 				break;
 
 			case 3:
@@ -71,6 +74,16 @@ public class Main {
 			case 5:
 
 				System.out.println("Digite o nome do Produtor a ser deletado:");
+				String deleteProducer = sc.nextLine();
+				List<Producer> deleteProducers = ProducerService.findByName(deleteProducer);
+				System.out.println(deleteProducers);
+				if (deleteProducers.isEmpty()) {
+					System.out.println("Nenhum produtor encontrado com esse nome.");
+				} else {
+					for (Producer produ : deleteProducers) {
+						ProducerRepository.delete(produ.getId());
+					}
+				}
 				
 				break;
 				
@@ -79,6 +92,9 @@ public class Main {
 				System.out.println("Digite o nome do Anime a ser deletadpo:");
 				
 				break;
+			
+			case 0:
+				System.out.println("Saindo da aplicação...");
 
 			}
 

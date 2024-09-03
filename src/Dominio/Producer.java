@@ -43,7 +43,9 @@ public class Producer {
 	
 	@Override
 	public String toString() {
-		return "Producer [id=" + id + ", name=" + name + "]";
+		return "Producer:"
+				+ "\nId = " + id 
+				+ "\nName=" + name;
 	}
 
 
