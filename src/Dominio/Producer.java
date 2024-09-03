@@ -9,11 +9,14 @@ public class Producer {
 	
 	//constructor
 	public Producer(String name) {
+		this.name = name;
+	}
+	
+	
+	public Producer(String name, int id) {
 		super();
 		this.name = name;
-		
-		
-		
+		this.id = id;	
 	}
 
 	
@@ -37,6 +40,13 @@ public class Producer {
 	}
 
 	
+	
+	@Override
+	public String toString() {
+		return "Producer [id=" + id + ", name=" + name + "]";
+	}
+
+
 	//getters and setters
 	public Integer getId() {
 		return id;
@@ -53,6 +63,7 @@ public class Producer {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	
 
 	

@@ -1,6 +1,7 @@
 package Services;
 
-import java.util.IllegalFormatWidthException;
+
+import java.util.List;
 
 import Dominio.Producer;
 import Repository.ProducerRepository;
@@ -17,4 +18,22 @@ public class ProducerService {
 		}
 		ProducerRepository.delete(id);
 	}
+	
+	public static void update(Producer producer) {
+		if (producer.getId() <=0 || producer.getId() == null) {
+			throw new IllegalArgumentException("ID inválido");
+		}
+		ProducerRepository.update(producer);
+	}
+	
+	public static List<Producer> findAll() {
+		return ProducerRepository.findAll();
+	}
+	
+	public static List<Producer> findByName(String name) {
+		return ProducerRepository.findByName(name);
+	}
+
+	
+	
 }
