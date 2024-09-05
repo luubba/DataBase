@@ -5,101 +5,153 @@ import java.util.Scanner;
 
 import Dominio.Anime;
 import Dominio.Producer;
-import Repository.ProducerRepository;
+import Services.AnimeService;
 import Services.ProducerService;
 
 public class Main {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-		int option = 0;
+        int option = 0;
 
-		do {
+        do {
+            System.out.println("O que deseja fazer:" + 
+                               "\n1.Adicionar produtor" + 
+                               "\n2.Adicionar anime" + 
+                               "\n3.Atualizar produtor" + 
+                               "\n4.Atualizar anime" + 
+                               "\n5.Remover produtor" + 
+                               "\n6.Remover anime" + 
+                               "\n7.Listar produtores" +
+                               "\n8.Listar animes" +
+                               "\n0.Sair da aplicação");
 
-			System.out.println("O que deseja fazer:" + 
-							   "\n1.Adicionar produtor" + 
-							   "\n2.Adicionar anime" + 
-							   "\n3.Atualizar produtor" + 
-							   "\n4.Atualizar anime" + 
-							   "\n5.Remover produtor" + 
-							   "\n6.Remover anime" + 
-							   "\n0. Sair da aplicação");
+            option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
 
-			option = sc.nextInt();
-			sc.nextLine();
-			switch (option) {
+            case 1:
+                System.out.println("Digite o nome do Produtor do anime:");
+                String producerName = sc.nextLine();
+                Producer producer = new Producer(producerName);
+                ProducerService.save(producer);
+                break;
 
-			case 1:
+            case 2:
+                System.out.println("Digite o nome do anime:");
+                String animeName = sc.nextLine();
+                
+                System.out.println("Digite o ID do Produtor do anime:");
+                int producerId = sc.nextInt();
+                sc.nextLine(); // Limpar o buffer
 
-				System.out.println("Digite o nome do Produtor do anime:");
-				String producerName = sc.nextLine();
+                Producer animeProducer = ProducerService.findAll().stream()
+                    .filter(p -> p.getId().equals(producerId))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Produtor não encontrado"));
 
-				Producer producer = new Producer(producerName);
-				ProducerService.save(producer);
+                Anime anime = new Anime(animeName, animeProducer);
+                AnimeService.save(anime);
+                break;
 
-				break;
+            case 3:
+                System.out.println("Digite o nome do Produtor a ser atualizado:");
+                String producerNameUpdate = sc.nextLine();
+                List<Producer> producers = ProducerService.findByName(producerNameUpdate);
+                System.out.println(producers);
 
-			case 2:
+                if (producers.isEmpty()) {
+                    System.out.println("Nenhum produtor encontrado com esse nome.");
+                } else {
+                    System.out.println("Digite o novo nome do Produtor:");
+                    String newProducerName = sc.nextLine();
+                    for (Producer produ : producers) {
+                        ProducerService.update(new Producer(newProducerName, produ.getId()));
+                    }
+                }
+                break;
 
-				System.out.println("Digite o nome do anime:");
-				
-				break;
+            case 4:
+                System.out.println("Digite o nome do Anime a ser atualizado:");
+                String animeNameUpdate = sc.nextLine();
+                List<Anime> animes = AnimeService.findByName(animeNameUpdate);
+                System.out.println(animes);
 
-			case 3:
+                if (animes.isEmpty()) {
+                    System.out.println("Nenhum anime encontrado com esse nome.");
+                } else {
+                    System.out.println("Digite o novo nome do Anime:");
+                    String newAnimeName = sc.nextLine();
 
-				System.out.println("Digite o nome do Produtor a ser atualizado:");
-				String producerNameUpdate = sc.nextLine();
-				List<Producer> producers = ProducerService.findByName(producerNameUpdate);
-				System.out.println(producers);
+                    System.out.println("Digite o ID do novo Produtor do anime:");
+                    int newProducerId = sc.nextInt();
+                    sc.nextLine(); // Limpar o buffer
 
-				if (producers.isEmpty()) {
-					System.out.println("Nenhum produtor encontrado com esse nome.");
-				} else {
-					System.out.println("Digite o novo nome do Produtor:");
-					String newProducer = sc.nextLine();
-					for (Producer produ : producers) {
-						ProducerRepository.updateByName(produ.getId(), newProducer);
-					}
-				}
-				break;
+                    Producer newProducer = ProducerService.findAll().stream()
+                        .filter(p -> p.getId().equals(newProducerId))
+                        .findFirst()
+                        .orElseThrow(() -> new IllegalArgumentException("Produtor não encontrado"));
 
-			case 4:
+                    for (Anime animeToUpdate : animes) {
+                        AnimeService.update(new Anime(newAnimeName, newProducer));
+                    }
+                }
+                break;
 
-				System.out.println("Digite o nome do Anime a ser atualizado:");
-				
-				break;
-				
-			case 5:
+            case 5:
+                System.out.println("Digite o nome do Produtor a ser deletado:");
+                String deleteProducer = sc.nextLine();
+                List<Producer> deleteProducers = ProducerService.findByName(deleteProducer);
+                System.out.println(deleteProducers);
 
-				System.out.println("Digite o nome do Produtor a ser deletado:");
-				String deleteProducer = sc.nextLine();
-				List<Producer> deleteProducers = ProducerService.findByName(deleteProducer);
-				System.out.println(deleteProducers);
-				if (deleteProducers.isEmpty()) {
-					System.out.println("Nenhum produtor encontrado com esse nome.");
-				} else {
-					for (Producer produ : deleteProducers) {
-						ProducerRepository.delete(produ.getId());
-					}
-				}
-				
-				break;
-				
-			case 6:
+                if (deleteProducers.isEmpty()) {
+                    System.out.println("Nenhum produtor encontrado com esse nome.");
+                } else {
+                    for (Producer produ : deleteProducers) {
+                        ProducerService.delete(produ.getId());
+                    }
+                }
+                break;
 
-				System.out.println("Digite o nome do Anime a ser deletadpo:");
-				
-				break;
-			
-			case 0:
-				System.out.println("Saindo da aplicação...");
+            case 6:
+                System.out.println("Digite o nome do Anime a ser deletado:");
+                String deleteAnime = sc.nextLine();
+                List<Anime> deleteAnimes = AnimeService.findByName(deleteAnime);
+                System.out.println(deleteAnimes);
 
-			}
+                if (deleteAnimes.isEmpty()) {
+                    System.out.println("Nenhum anime encontrado com esse nome.");
+                } else {
+                    for (Anime animeToDelete : deleteAnimes) {
+                        AnimeService.delete(animeToDelete.getId());
+                    }
+                }
+                break;
 
-		} while (option == 0);
-		sc.close();
-	}
+            case 7:
+                List<Producer> producersList = ProducerService.findAll();
+                System.out.println("Lista de Produtores:");
+                producersList.forEach(System.out::println);
+                break;
 
+            case 8:
+                List<Anime> animesList = AnimeService.findAll();
+                System.out.println("Lista de Animes:");
+                animesList.forEach(System.out::println);
+                break;
+
+            case 0:
+                System.out.println("Saindo da aplicação...");
+                break;
+
+            default:
+                System.out.println("Opção inválida, tente novamente.");
+            }
+
+        } while (option != 0);
+
+        sc.close();
+    }
 }

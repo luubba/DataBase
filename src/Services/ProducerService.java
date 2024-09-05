@@ -17,7 +17,7 @@ public class ProducerService {
 			throw new IllegalArgumentException("ID inválido");
 		}
 		ProducerRepository.delete(id);
-	}
+	}	
 	
 	public static void update(Producer producer) {
 		if (producer.getId() <=0 || producer.getId() == null) {
